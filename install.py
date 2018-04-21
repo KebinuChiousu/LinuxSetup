@@ -47,7 +47,7 @@ def ubuntu():
     #editor
     pkg3 = ['geany', 'geany-plugins']
     #python
-    pkg4 = ['python-pip','python3-pip']
+    pkg4 = ['python','python-pip','python3-pip','python3-tk','python3-autopilot']
     #install packages
     run_script(cmd + pkg1 + pkg2 + pkg3 + pkg4)
 
@@ -64,10 +64,10 @@ def mainmenu():
         print('')
         for entry in options:
             opt = '%02d' % entry
-            print opt, menu[entry]
+            print (opt, menu[entry])
         print('')
         selection = get_input("Please Select: ")
-        print selection
+        print (selection)
         if selection == '1':
             ubuntu()
             pause()
