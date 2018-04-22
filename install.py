@@ -5,6 +5,15 @@ import shutil
 import fnmatch
 import subprocess
 
+def print_menu_item(option,text):
+
+    opt = '%02d' % option
+
+    if sys.version_info[0] == 3:
+        print(opt,text)
+    else:
+        print(opt + ' ' + text)
+
 def get_input(msg):
 
     ret = ''
@@ -47,9 +56,16 @@ def ubuntu():
     #editor
     pkg3 = ['geany', 'geany-plugins']
     #python
-    pkg4 = ['python','python-pip','python3-pip','python3-tk','python3-autopilot']
+    pkg4 = ['python','python-pip']
+    #python3
+    pkg5 = ['python3-pip','python3-tk','python3-autopilot']
     #install packages
-    run_script(cmd + pkg1 + pkg2 + pkg3 + pkg4)
+    run_script(cmd + pkg1 + pkg2 + pkg3 + pkg4 + pkg5)
+    #upgrade pip
+    pip = ['sudo','-H','pip','install','--upgrade','pip']
+    run_script(pip)
+    pip3 = ['sudo','-H','pip3','install','--upgrade','pip']
+    run_script(pip3)
 
 
 def mainmenu():
@@ -63,8 +79,7 @@ def mainmenu():
         print("Linux Desktop Setup Utility")
         print('')
         for entry in options:
-            opt = '%02d' % entry
-            print (opt, menu[entry])
+            print_menu_item(entry, menu[entry])
         print('')
         selection = get_input("Please Select: ")
         print (selection)
