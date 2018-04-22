@@ -6,6 +6,13 @@ import fnmatch
 import subprocess
 import argparse
 
+home = os.path.expanduser("~")
+
+def ensure_dir(path):
+    path = os.path.abspath(path)
+    if not os.path.exists(path):
+        os.makedirs(path)
+
 def print_menu_item(option,text):
 
     opt = '%02d' % option
@@ -75,6 +82,17 @@ def upgrade_pip():
     pip3 = ['sudo','-H','pip3','install','--upgrade','pip']
     run_script(pip3)
 
+def oh_my_zsh():
+
+    gitdir = os.path.join(home,'git')
+    ensure_dir(gitdir)
+    omzdir = os.path.join(gitdir,'oh-my-zsh')
+    if not os.path.exists(omzdir):
+        omz = ['git','clone','https://github.com/robbyrussell/oh-my-zsh.git',omzdir]
+        run_script(omz)
+    cmd = [os.path.join(omzdir,'tools','install.sh')]
+    run_script(cmd)
+
 def ubuntu():
     cmd = ['sudo','apt-get','update']
     run_script(cmd)
@@ -85,6 +103,8 @@ def ubuntu():
     run_script(cmd + pkgs)
     # Upgrade pip to latest version
     upgrade_pip()
+    # Install oh-my-zsh
+    oh_my_zsh()
 
 def mainmenu():
 
