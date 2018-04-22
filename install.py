@@ -45,28 +45,45 @@ def run_script(value):
 
     subprocess.call(cmd,shell=True)
 
-def ubuntu():
-    cmd = ['sudo','apt-get','update']
-    run_script(cmd)
-    cmd = ['sudo','apt-get','install','-y']
+def get_packages():
+
     #git
     pkg1 = ['git', 'git-gui', 'gitk' ]
-    #shell
-    pkg2 = ['zsh']
+    #shell & utilities
+    pkg2 = ['zsh', 'vim', 'wget', 'curl', 'xz-utils']
     #editor
     pkg3 = ['geany', 'geany-plugins']
     #python
     pkg4 = ['python','python-pip']
     #python3
     pkg5 = ['python3-pip','python3-tk','python3-autopilot']
-    #install packages
-    run_script(cmd + pkg1 + pkg2 + pkg3 + pkg4 + pkg5)
-    #upgrade pip
+    #python qt support
+    pkg6 = ['python-qt4', 'qt4-designer']
+    # sqlite support
+    pkg7 = ['sqlitebrowser']
+
+    pkgs = pkg1 + pkg2 + pkg3 + pkg4 + pkg5 + pkg6 + pkg7
+
+    return pkgs
+
+def upgrade_pip():
+
+    # Upgrade pip
     pip = ['sudo','-H','pip','install','--upgrade','pip']
     run_script(pip)
     pip3 = ['sudo','-H','pip3','install','--upgrade','pip']
     run_script(pip3)
 
+def ubuntu():
+    cmd = ['sudo','apt-get','update']
+    run_script(cmd)
+    cmd = ['sudo','apt-get','install','-y']
+    # Get list of packages to install
+    pkgs = get_packages()
+    # Install packages
+    run_script(cmd + pkgs)
+    # Upgrade pip to latest version
+    upgrade_pip()
 
 def mainmenu():
 
