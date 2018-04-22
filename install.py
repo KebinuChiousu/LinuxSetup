@@ -7,6 +7,7 @@ import subprocess
 import argparse
 
 home = os.path.expanduser("~")
+sfolder = os.getcwd()
 
 def ensure_dir(path):
     path = os.path.abspath(path)
@@ -53,6 +54,18 @@ def run_script(value):
 
     subprocess.call(cmd,shell=True)
 
+def get_files(path,value):
+    matches = []
+    for root, dirs, files in os.walk(path):
+        for filename in fnmatch.filter(files,value):
+            f = root+'/'+filename
+            matches.append(f)
+
+    # Sort files alphabetically
+    matches.sort()
+
+    return matches
+
 def get_packages():
 
     #git
@@ -90,8 +103,36 @@ def oh_my_zsh():
     if not os.path.exists(omzdir):
         omz = ['git','clone','https://github.com/robbyrussell/oh-my-zsh.git',omzdir]
         run_script(omz)
-    cmd = [os.path.join(omzdir,'tools','install.sh')]
+
+    omz = os.path.join(home,'.oh-my-zsh')
+    if not os.path.exists(omz):
+        cmd = [os.path.join(omzdir,'tools','install.sh')]
+        run_script(cmd)
+
+    fontdir = os.path.join(gitdir,'powerline-fonts')
+    if not os.path.exists(fontdir):
+        # Get powerline fonts
+        cmd = ['git','clone','https://github.com/powerline/fonts.git',fontdir]
+        run_script(cmd)
+    # Install powerline fonts
+    cmd = [os.path.join(fontdir,'install.sh')]
     run_script(cmd)
+
+    themedir = os.path.join(omz,'custom','themes','powerlevel9k')
+    if not os.path.exists(themedir):
+        cmd = ['git', 'clone', 'https://github.com/bhilburn/powerlevel9k.git',themedir]
+        run_script(cmd)
+
+def copy_files():
+
+    zshrc = os.path.join(sfolder,'oh-my-zsh','.zshrc')
+    custom = os.path.join(sfolder,'oh-my-zsh','custom')
+    target = os.path.join(home,'.oh-my-zsh','custom')
+    shutil.copy2(zshrc,os.path.join(home,'.zshrc'))
+    zsh = get_files(custom,'*.zsh')
+    for f in zsh:
+        print(f)
+        shutil.copy2(f,target)
 
 def ubuntu():
     cmd = ['sudo','apt-get','update']
@@ -105,6 +146,8 @@ def ubuntu():
     upgrade_pip()
     # Install oh-my-zsh
     oh_my_zsh()
+    # Copy customizations for oh-my-zsh
+    copy_files()
 
 def mainmenu():
 
