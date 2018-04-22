@@ -58,7 +58,7 @@ def get_packages():
     #git
     pkg1 = ['git', 'git-gui', 'gitk' ]
     #shell & utilities
-    pkg2 = ['zsh', 'vim', 'wget', 'curl', 'xz-utils']
+    pkg2 = ['zsh', 'vim', 'wget', 'curl', 'xz-utils', 'make']
     #editor
     pkg3 = ['geany', 'geany-plugins']
     #python
