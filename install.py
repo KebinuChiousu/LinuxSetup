@@ -4,6 +4,7 @@ import sys
 import shutil
 import fnmatch
 import subprocess
+import argparse
 
 def print_menu_item(option,text):
 
@@ -111,8 +112,19 @@ def mainmenu():
 
 def main():
 
-    #Call Main Menu
-    mainmenu()
+    parser = argparse.ArgumentParser(
+        description=('Configure Linux Desktops: Ubuntu'))
+
+    parser.add_argument('--ubuntu', required=False, action='store_true',
+                        help='Configure Ubuntu')
+
+    args = parser.parse_args()
+
+    if args.ubuntu:
+        ubuntu()
+    else:
+        # Call Main Menu
+        mainmenu()
 
 if __name__ == "__main__":
     sys.exit(main())
