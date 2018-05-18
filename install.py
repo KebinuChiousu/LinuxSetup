@@ -123,6 +123,14 @@ def oh_my_zsh():
         cmd = ['git', 'clone', 'https://github.com/bhilburn/powerlevel9k.git',themedir]
         run_script(cmd)
 
+    themedir = os.path.join(gitdir,'geany-themes')
+    if not os.path.exists(themedir):
+	cmd = ['git', 'clone', 'https://github.com/codebrainz/geany-themes.git',themedir]
+        run_script(cmd)
+    # Install geany themes
+    cmd = [os.path.join(themedir,'install.sh')]
+    run_script(cmd)
+
 def copy_files():
 
     zshrc = os.path.join(sfolder,'oh-my-zsh','.zshrc')
