@@ -157,7 +157,7 @@ def ubuntu():
     # Copy customizations for oh-my-zsh
     copy_files()
     
-def amzn()
+def amzn():
     # Install oh-my-zsh
     oh_my_zsh()
     # Copy customizations for oh-my-zsh
