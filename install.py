@@ -66,7 +66,7 @@ def get_files(path,value):
 
     return matches
 
-def get_packages():
+def get_packages_deb():
 
     #git
     pkg1 = ['git', 'git-gui', 'gitk' ]
@@ -125,7 +125,7 @@ def oh_my_zsh():
 
     themedir = os.path.join(gitdir,'geany-themes')
     if not os.path.exists(themedir):
-	cmd = ['git', 'clone', 'https://github.com/codebrainz/geany-themes.git',themedir]
+        cmd = ['git', 'clone', 'https://github.com/codebrainz/geany-themes.git',themedir]
         run_script(cmd)
     # Install geany themes
     cmd = [os.path.join(themedir,'install.sh')]
@@ -147,11 +147,17 @@ def ubuntu():
     run_script(cmd)
     cmd = ['sudo','apt-get','install','-y']
     # Get list of packages to install
-    pkgs = get_packages()
+    pkgs = get_packages_deb()
     # Install packages
     run_script(cmd + pkgs)
     # Upgrade pip to latest version
     upgrade_pip()
+    # Install oh-my-zsh
+    oh_my_zsh()
+    # Copy customizations for oh-my-zsh
+    copy_files()
+    
+def amzn()
     # Install oh-my-zsh
     oh_my_zsh()
     # Copy customizations for oh-my-zsh
@@ -162,7 +168,8 @@ def mainmenu():
     while True:
         menu = {}
         menu[1] = "Ubuntu"
-        menu[2] = "Exit"
+        menu[2] = "Amazon Linux"
+        menu[3] = "Exit"
         options=menu.keys()
         _=os.system("clear")
         print("Linux Desktop Setup Utility")
@@ -175,7 +182,10 @@ def mainmenu():
         if selection == '1':
             ubuntu()
             pause()
-        elif selection == '2':
+        if selection == '2':
+            amzn()
+            pause()
+        elif selection == '3':
             break
         else:
             print("Unknown Option Selected!")
@@ -184,15 +194,20 @@ def mainmenu():
 def main():
 
     parser = argparse.ArgumentParser(
-        description=('Configure Linux Desktops: Ubuntu'))
+        description=('Configure Linux Desktops'))
 
     parser.add_argument('--ubuntu', required=False, action='store_true',
                         help='Configure Ubuntu')
+
+    parser.add_argument('--amzn', required=False, action='store_true',
+                        help='Configure Amazon Linux'
 
     args = parser.parse_args()
 
     if args.ubuntu:
         ubuntu()
+    elif args.amzn:
+        amzn()
     else:
         # Call Main Menu
         mainmenu()
