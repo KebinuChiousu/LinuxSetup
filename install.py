@@ -200,7 +200,7 @@ def main():
                         help='Configure Ubuntu')
 
     parser.add_argument('--amzn', required=False, action='store_true',
-                        help='Configure Amazon Linux'
+                        help='Configure Amazon Linux')
 
     args = parser.parse_args()
 
