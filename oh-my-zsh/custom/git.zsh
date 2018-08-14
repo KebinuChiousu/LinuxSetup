@@ -6,6 +6,7 @@ git_add_modified() {
   done
 }
 
+alias gh='cd $HOME/git'
 alias gam='git_add_modified'
 alias gbw='git branch working'
 alias gcm='git checkout master'
