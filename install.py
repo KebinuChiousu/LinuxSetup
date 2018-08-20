@@ -81,7 +81,7 @@ def get_packages_deb():
     #python qt support
     pkg6 = ['python-qt4', 'qt4-designer']
     # sqlite support
-    pkg7 = ['sqlitebrowser']
+    pkg7 = ['sqlitebrowser', 'jq']
 
     pkgs = pkg1 + pkg2 + pkg3 + pkg4 + pkg5 + pkg6 + pkg7
 
