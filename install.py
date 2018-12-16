@@ -66,7 +66,7 @@ def get_files(path,value):
 
     return matches
 
-def get_packages_deb():
+def get_pkg_deb():
 
     #git
     pkg1 = ['git', 'git-gui', 'gitk' ]
@@ -77,7 +77,7 @@ def get_packages_deb():
     #python
     pkg4 = ['python','python-pip']
     #python3
-    pkg5 = ['python3-pip','python3-tk','python3-autopilot']
+    pkg5 = ['python3-pip','python3-tk']
     #python qt support
     pkg6 = ['python-qt4', 'qt4-designer']
     # sqlite support
@@ -87,12 +87,22 @@ def get_packages_deb():
 
     return pkgs
 
-def upgrade_pip():
+def get_pkg_ubnt():
+
+    pkg1 = get_pkg_deb()
+
+    pkg2 = ['python3-autopilot']
+
+    pkgs = pkg1 + pkg2
+
+    return pkgs
+
+def upgrade_pip(cmd):
 
     # Upgrade pip
-    pip = ['sudo','-H','pip','install','--upgrade','pip']
+    pip = cmd + ['pip','install','--upgrade','pip']
     run_script(pip)
-    pip3 = ['sudo','-H','pip3','install','--upgrade','pip']
+    pip3 = cmd + ['pip3','install','--upgrade','pip']
     run_script(pip3)
 
 def oh_my_zsh():
@@ -147,21 +157,37 @@ def ubuntu():
     run_script(cmd)
     cmd = ['sudo','apt-get','install','-y']
     # Get list of packages to install
-    pkgs = get_packages_deb()
+    pkgs = get_pkg_ubnt()
     # Install packages
     run_script(cmd + pkgs)
     # Upgrade pip to latest version
-    upgrade_pip()
+    upgrade_pip(['sudo', 'EH'])
     # Install oh-my-zsh
     oh_my_zsh()
     # Copy customizations for oh-my-zsh
     copy_files()
-    
+
 def amzn():
     # Install oh-my-zsh
     oh_my_zsh()
     # Copy customizations for oh-my-zsh
     copy_files()
+
+def crostini():
+    cmd = ['sudo','apt-get','update']
+    run_script(cmd)
+    cmd = ['sudo','apt-get','install','-y']
+    # Get list of packages to install
+    pkgs = get_pkg_deb()
+    # Install packages
+    run_script(cmd + pkgs)
+    # Upgrade pip to latest version
+    upgrade_pip(['sudo'])
+    # Install oh-my-zsh
+    oh_my_zsh()
+    # Copy customizations for oh-my-zsh
+    copy_files()
+
 
 def mainmenu():
 
@@ -169,7 +195,8 @@ def mainmenu():
         menu = {}
         menu[1] = "Ubuntu"
         menu[2] = "Amazon Linux"
-        menu[3] = "Exit"
+        menu[3] = "Chrome OS"
+        menu[4] = "Exit"
         options=menu.keys()
         _=os.system("clear")
         print("Linux Desktop Setup Utility")
@@ -185,11 +212,15 @@ def mainmenu():
         if selection == '2':
             amzn()
             pause()
-        elif selection == '3':
+        if selection == '3':
+            crostini()
+            pause()
+        elif selection == '4':
             break
         else:
             print("Unknown Option Selected!")
             pause()
+
 
 def main():
 
@@ -202,15 +233,21 @@ def main():
     parser.add_argument('--amzn', required=False, action='store_true',
                         help='Configure Amazon Linux')
 
+    parser.add_argument('--chrome', required=False, action='store_true',
+                        help='Configure Chrome OS')
+
     args = parser.parse_args()
 
     if args.ubuntu:
         ubuntu()
-    elif args.amzn:
+    if args.amzn:
         amzn()
+    elif args.chrome:
+        crostini()
     else:
         # Call Main Menu
         mainmenu()
+
 
 if __name__ == "__main__":
     sys.exit(main())
