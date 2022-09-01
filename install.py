@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 import os
 import sys
 import shutil
@@ -75,15 +75,13 @@ def get_pkg_deb():
     #editor
     pkg3 = ['geany', 'geany-plugins']
     #python
-    pkg4 = ['python','python-pip']
+    pkg4 = ['python2']
     #python3
-    pkg5 = ['python3-pip','python3-tk']
-    #python qt support
-    pkg6 = ['python-qt4', 'qt4-designer']
+    pkg5 = ['python3-pip', 'python3-tk', 'python3-qtpy']
     # sqlite support
-    pkg7 = ['sqlitebrowser', 'jq']
+    pkg6 = ['sqlitebrowser', 'jq']
 
-    pkgs = pkg1 + pkg2 + pkg3 + pkg4 + pkg5 + pkg6 + pkg7
+    pkgs = pkg1 + pkg2 + pkg3 + pkg4 + pkg5 + pkg6
 
     return pkgs
 
@@ -100,9 +98,9 @@ def get_pkg_ubnt():
 def upgrade_pip(cmd):
 
     # Upgrade pip
-    pip = cmd + ['pip','install','--upgrade','pip']
+    pip = cmd + ['python2','-m', 'pip', '--upgrade','pip']
     run_script(pip)
-    pip3 = cmd + ['pip3','install','--upgrade','pip']
+    pip3 = cmd + ['python3','-m','pip', '--upgrade','pip']
     run_script(pip3)
 
 def oh_my_zsh():
